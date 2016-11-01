@@ -1,0 +1,5 @@
+Dependencies for Project '01', Target 'Target 1': (DO NOT MODIFY !)
+F (..\core\stm32f10x.h)(0x581011BB)()
+F (..\core\STM32F10x.s)(0x580D9847)(--cpu Cortex-M3 --apcs=interwork --pd "__MICROLIB SETA 1"-I "C:\Users\THB\Documents\STM32 Data\自己的探索[从0开始]\01\RTE"-I D:\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I D:\MDK\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 514" --pd "STM32F10X_HD SETA 1"--list .\listings\stm32f10x.lst --xref -o .\objects\stm32f10x.o --depend .\objects\stm32f10x.d)
+F (.\main.c)(0x581012A0)(-c --cpu Cortex-M3 -D__MICROLIB -O0 --apcs=interwork --split_sections -I..\core-I "C:\Users\THB\Documents\STM32 Data\自己的探索[从0开始]\01\RTE"-I D:\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I D:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (..\core\stm32f10x.h)(0x581011BB)

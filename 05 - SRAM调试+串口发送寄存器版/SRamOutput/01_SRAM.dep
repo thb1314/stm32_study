@@ -1,0 +1,11 @@
+Dependencies for Project '01', Target 'SRAM': (DO NOT MODIFY !)
+F (..\core\stm32f10x.h)(0x581548DC)()
+F (..\core\STM32F10x.s)(0x58120BDF)(--cpu Cortex-M3 -g --apcs=interwork -I "C:\Users\THB\Documents\STM32 Data\自己的探索[从0开始]\05\RTE"-I D:\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I D:\MDK\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 514" --pd "STM32F10X_HD SETA 1"--list .\listings\stm32f10x.lst --xref -o .\sramoutput\stm32f10x.o --depend .\sramoutput\stm32f10x.d)
+F (..\core\system_stm32f10x.c)(0x581484AB)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I..\core-I "C:\Users\THB\Documents\STM32 Data\自己的探索[从0开始]\05\RTE"-I D:\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I D:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DVECT_TAB_SRAM-o .\sramoutput\system_stm32f10x.o --omf_browse .\sramoutput\system_stm32f10x.crf --depend .\sramoutput\system_stm32f10x.d)
+I (..\core\stm32f10x.h)(0x581548DC)
+I (..\core\core_cm3.h)(0x5811E168)
+I (D:\MDK\ARM\ARMCC\include\stdint.h)(0x5784FDF1)
+F (.\main.c)(0x5814B484)(-c --cpu Cortex-M3 -g -O0 --apcs=interwork --split_sections -I..\core-I "C:\Users\THB\Documents\STM32 Data\自己的探索[从0开始]\05\RTE"-I D:\MDK\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I D:\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DVECT_TAB_SRAM-o .\sramoutput\main.o --omf_browse .\sramoutput\main.crf --depend .\sramoutput\main.d)
+I (..\core\stm32f10x.h)(0x581548DC)
+I (..\core\core_cm3.h)(0x5811E168)
+I (D:\MDK\ARM\ARMCC\include\stdint.h)(0x5784FDF1)

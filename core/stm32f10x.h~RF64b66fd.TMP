@@ -1,0 +1,770 @@
+#ifndef __STM32F10x_H
+#define __STM32F10x_H
+
+
+
+#ifdef __cplusplus
+ extern "C" {
+#endif 
+	 
+#include "core_cm3.h"
+
+
+// keil中已经内置了定义
+// #define STM32F10X_HD
+
+
+	 
+	 
+#if !defined  HSE_VALUE
+ #ifdef STM32F10X_CL   
+  #define HSE_VALUE    ((uint32_t)25000000) /*!< Value of the External oscillator in Hz */
+ #else 
+  #define HSE_VALUE    ((uint32_t)8000000) /*!< Value of the External oscillator in Hz */
+ #endif /* STM32F10X_CL */
+#endif /* HSE_VALUE */
+
+
+/**
+ * @brief In the following line adjust the External High Speed oscillator (HSE) Startup 
+   Timeout value 
+   */
+#define HSE_STARTUP_TIMEOUT   ((uint16_t)0x0500) /*!< Time out for HSE start up */
+
+#define HSI_VALUE    ((uint32_t)8000000) /*!< Value of the Internal oscillator in Hz*/	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+#define FLASH_BASE            ((uint32_t)0x08000000) /*!< FLASH base address in the alias region */
+#define SRAM_BASE             ((uint32_t)0x20000000) /*!< SRAM base address in the alias region */
+#define FSMC_R_BASE           ((uint32_t)0xA0000000) /*!< FSMC registers base address */
+
+
+
+
+	 
+	 
+// 外设基地址
+#define PERIPH_BASE           ((uint32_t)0x40000000) 
+
+// 总线基地址
+#define APB1PERIPH_BASE       PERIPH_BASE
+#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
+#define AHBPERIPH_BASE        (PERIPH_BASE + 0x20000)
+
+
+
+
+
+/****************************
+GPIO定义
+****************************/
+// GPIO 外设基地址
+#define GPIOA_BASE            (APB2PERIPH_BASE + 0x0800)
+#define GPIOB_BASE            (APB2PERIPH_BASE + 0x0C00)
+#define GPIOC_BASE            (APB2PERIPH_BASE + 0x1000)
+#define GPIOD_BASE            (APB2PERIPH_BASE + 0x1400)
+#define GPIOE_BASE            (APB2PERIPH_BASE + 0x1800)
+#define GPIOF_BASE            (APB2PERIPH_BASE + 0x1C00)
+#define GPIOG_BASE            (APB2PERIPH_BASE + 0x2000)
+
+
+typedef struct
+{
+	//GPIO端口配置低寄存器 地址偏移0x00
+	__IO uint32_t CRL;
+	//GPIO端口配置高寄存器 地址偏移0x04
+	__IO uint32_t CRH;
+	//GPIO端口数据输入寄存器 地址偏移0x08
+	__IO uint32_t IDR;
+	//GPIO端口数据输出寄存器 地址偏移0x0C
+	__IO uint32_t ODR;
+	//GPIO端口数据设置/清除寄存器 地址偏移0x10
+	__IO uint32_t BSRR;
+	//GPIO端口位清除寄存器 地址偏移0x14
+	__IO uint32_t BRR;
+	//GPIO端口配置锁寄存器 地址偏移0x18
+	__IO uint32_t LCKR;
+} GPIO_TypeDef;
+
+
+//定义GPIO寄存器组
+#define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+#define GPIOB               ((GPIO_TypeDef *) GPIOB_BASE)
+#define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+#define GPIOD               ((GPIO_TypeDef *) GPIOD_BASE)
+#define GPIOE               ((GPIO_TypeDef *) GPIOE_BASE)
+#define GPIOF               ((GPIO_TypeDef *) GPIOF_BASE)
+#define GPIOG               ((GPIO_TypeDef *) GPIOG_BASE)
+
+
+
+
+
+
+
+/****************************
+RCC时钟定义
+****************************/
+
+#define RCC_BASE              (AHBPERIPH_BASE + 0x1000)
+
+typedef struct
+{
+  __IO uint32_t CR;
+  __IO uint32_t CFGR;
+  __IO uint32_t CIR;
+  __IO uint32_t APB2RSTR;
+  __IO uint32_t APB1RSTR;
+  __IO uint32_t AHBENR;
+  __IO uint32_t APB2ENR;
+  __IO uint32_t APB1ENR;
+  __IO uint32_t BDCR;
+  __IO uint32_t CSR;
+
+} RCC_TypeDef;
+
+#define RCC                 ((RCC_TypeDef *) RCC_BASE)
+
+
+
+
+
+/****************************
+FLASH定义
+****************************/
+#define FLASH_R_BASE          (AHBPERIPH_BASE + 0x2000) /*!< Flash registers base address */
+typedef struct
+{
+  __IO uint32_t ACR;
+  __IO uint32_t KEYR;
+  __IO uint32_t OPTKEYR;
+  __IO uint32_t SR;
+  __IO uint32_t CR;
+  __IO uint32_t AR;
+  __IO uint32_t RESERVED;
+  __IO uint32_t OBR;
+  __IO uint32_t WRPR;
+#ifdef STM32F10X_XL
+  uint32_t RESERVED1[8]; 
+  __IO uint32_t KEYR2;
+  uint32_t RESERVED2;   
+  __IO uint32_t SR2;
+  __IO uint32_t CR2;
+  __IO uint32_t AR2; 
+#endif /* STM32F10X_XL */  
+} FLASH_TypeDef;
+#define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
+/******************************************************************************/
+/*                                                                            */
+/*                      FLASH and Option Bytes Registers                      */
+/*                                                                            */
+/******************************************************************************/
+
+/*******************  Bit definition for FLASH_ACR register  ******************/
+#define  FLASH_ACR_LATENCY                   ((uint8_t)0x03)               /*!< LATENCY[2:0] bits (Latency) */
+#define  FLASH_ACR_LATENCY_0                 ((uint8_t)0x00)               /*!< Bit 0 */
+#define  FLASH_ACR_LATENCY_1                 ((uint8_t)0x01)               /*!< Bit 1 */
+#define  FLASH_ACR_LATENCY_2                 ((uint8_t)0x02)               /*!< Bit 2 */
+
+#define  FLASH_ACR_HLFCYA                    ((uint8_t)0x08)               /*!< Flash Half Cycle Access Enable */
+#define  FLASH_ACR_PRFTBE                    ((uint8_t)0x10)               /*!< Prefetch Buffer Enable */
+#define  FLASH_ACR_PRFTBS                    ((uint8_t)0x20)               /*!< Prefetch Buffer Status */
+
+/******************  Bit definition for FLASH_KEYR register  ******************/
+#define  FLASH_KEYR_FKEYR                    ((uint32_t)0xFFFFFFFF)        /*!< FPEC Key */
+
+/*****************  Bit definition for FLASH_OPTKEYR register  ****************/
+#define  FLASH_OPTKEYR_OPTKEYR               ((uint32_t)0xFFFFFFFF)        /*!< Option Byte Key */
+
+/******************  Bit definition for FLASH_SR register  *******************/
+#define  FLASH_SR_BSY                        ((uint8_t)0x01)               /*!< Busy */
+#define  FLASH_SR_PGERR                      ((uint8_t)0x04)               /*!< Programming Error */
+#define  FLASH_SR_WRPRTERR                   ((uint8_t)0x10)               /*!< Write Protection Error */
+#define  FLASH_SR_EOP                        ((uint8_t)0x20)               /*!< End of operation */
+
+/*******************  Bit definition for FLASH_CR register  *******************/
+#define  FLASH_CR_PG                         ((uint16_t)0x0001)            /*!< Programming */
+#define  FLASH_CR_PER                        ((uint16_t)0x0002)            /*!< Page Erase */
+#define  FLASH_CR_MER                        ((uint16_t)0x0004)            /*!< Mass Erase */
+#define  FLASH_CR_OPTPG                      ((uint16_t)0x0010)            /*!< Option Byte Programming */
+#define  FLASH_CR_OPTER                      ((uint16_t)0x0020)            /*!< Option Byte Erase */
+#define  FLASH_CR_STRT                       ((uint16_t)0x0040)            /*!< Start */
+#define  FLASH_CR_LOCK                       ((uint16_t)0x0080)            /*!< Lock */
+#define  FLASH_CR_OPTWRE                     ((uint16_t)0x0200)            /*!< Option Bytes Write Enable */
+#define  FLASH_CR_ERRIE                      ((uint16_t)0x0400)            /*!< Error Interrupt Enable */
+#define  FLASH_CR_EOPIE                      ((uint16_t)0x1000)            /*!< End of operation interrupt enable */
+
+/*******************  Bit definition for FLASH_AR register  *******************/
+#define  FLASH_AR_FAR                        ((uint32_t)0xFFFFFFFF)        /*!< Flash Address */
+
+/******************  Bit definition for FLASH_OBR register  *******************/
+#define  FLASH_OBR_OPTERR                    ((uint16_t)0x0001)            /*!< Option Byte Error */
+#define  FLASH_OBR_RDPRT                     ((uint16_t)0x0002)            /*!< Read protection */
+
+#define  FLASH_OBR_USER                      ((uint16_t)0x03FC)            /*!< User Option Bytes */
+#define  FLASH_OBR_WDG_SW                    ((uint16_t)0x0004)            /*!< WDG_SW */
+#define  FLASH_OBR_nRST_STOP                 ((uint16_t)0x0008)            /*!< nRST_STOP */
+#define  FLASH_OBR_nRST_STDBY                ((uint16_t)0x0010)            /*!< nRST_STDBY */
+#define  FLASH_OBR_BFB2                      ((uint16_t)0x0020)            /*!< BFB2 */
+
+/******************  Bit definition for FLASH_WRPR register  ******************/
+#define  FLASH_WRPR_WRP                        ((uint32_t)0xFFFFFFFF)        /*!< Write Protect */
+
+/*----------------------------------------------------------------------------*/
+
+/******************  Bit definition for FLASH_RDP register  *******************/
+#define  FLASH_RDP_RDP                       ((uint32_t)0x000000FF)        /*!< Read protection option byte */
+#define  FLASH_RDP_nRDP                      ((uint32_t)0x0000FF00)        /*!< Read protection complemented option byte */
+
+/******************  Bit definition for FLASH_USER register  ******************/
+#define  FLASH_USER_USER                     ((uint32_t)0x00FF0000)        /*!< User option byte */
+#define  FLASH_USER_nUSER                    ((uint32_t)0xFF000000)        /*!< User complemented option byte */
+
+/******************  Bit definition for FLASH_Data0 register  *****************/
+#define  FLASH_Data0_Data0                   ((uint32_t)0x000000FF)        /*!< User data storage option byte */
+#define  FLASH_Data0_nData0                  ((uint32_t)0x0000FF00)        /*!< User data storage complemented option byte */
+
+/******************  Bit definition for FLASH_Data1 register  *****************/
+#define  FLASH_Data1_Data1                   ((uint32_t)0x00FF0000)        /*!< User data storage option byte */
+#define  FLASH_Data1_nData1                  ((uint32_t)0xFF000000)        /*!< User data storage complemented option byte */
+
+/******************  Bit definition for FLASH_WRP0 register  ******************/
+#define  FLASH_WRP0_WRP0                     ((uint32_t)0x000000FF)        /*!< Flash memory write protection option bytes */
+#define  FLASH_WRP0_nWRP0                    ((uint32_t)0x0000FF00)        /*!< Flash memory write protection complemented option bytes */
+
+/******************  Bit definition for FLASH_WRP1 register  ******************/
+#define  FLASH_WRP1_WRP1                     ((uint32_t)0x00FF0000)        /*!< Flash memory write protection option bytes */
+#define  FLASH_WRP1_nWRP1                    ((uint32_t)0xFF000000)        /*!< Flash memory write protection complemented option bytes */
+
+/******************  Bit definition for FLASH_WRP2 register  ******************/
+#define  FLASH_WRP2_WRP2                     ((uint32_t)0x000000FF)        /*!< Flash memory write protection option bytes */
+#define  FLASH_WRP2_nWRP2                    ((uint32_t)0x0000FF00)        /*!< Flash memory write protection complemented option bytes */
+
+/******************  Bit definition for FLASH_WRP3 register  ******************/
+#define  FLASH_WRP3_WRP3                     ((uint32_t)0x00FF0000)        /*!< Flash memory write protection option bytes */
+#define  FLASH_WRP3_nWRP3                    ((uint32_t)0xFF000000)        /*!< Flash memory write protection complemented option bytes */
+
+
+
+/****************************
+USART
+****************************/
+
+/** 
+  * @brief Universal Synchronous Asynchronous Receiver Transmitter
+  */
+ 
+typedef struct
+{
+  __IO uint16_t SR;
+  uint16_t  RESERVED0;
+  __IO uint16_t DR;
+  uint16_t  RESERVED1;
+  __IO uint16_t BRR;
+  uint16_t  RESERVED2;
+  __IO uint16_t CR1;
+  uint16_t  RESERVED3;
+  __IO uint16_t CR2;
+  uint16_t  RESERVED4;
+  __IO uint16_t CR3;
+  uint16_t  RESERVED5;
+  __IO uint16_t GTPR;
+  uint16_t  RESERVED6;
+} USART_TypeDef;
+
+#define USART1_BASE           (APB2PERIPH_BASE + 0x3800)
+#define USART2_BASE           (APB1PERIPH_BASE + 0x4400)
+#define USART3_BASE           (APB1PERIPH_BASE + 0x4800)
+#define UART4_BASE            (APB1PERIPH_BASE + 0x4C00)
+#define UART5_BASE            (APB1PERIPH_BASE + 0x5000)
+
+
+#define USART1              ((USART_TypeDef *) USART1_BASE)
+#define USART2              ((USART_TypeDef *) USART2_BASE)
+#define USART3              ((USART_TypeDef *) USART3_BASE)
+#define UART4               ((USART_TypeDef *) UART4_BASE)
+#define UART5               ((USART_TypeDef *) UART5_BASE)
+/****************************
+位段实现
+****************************/
+
+#define BIT_BAND_BASE(addr) (((addr) & 0xF0000000)+0x02000000)
+#define BYTE_OFFSET(addr) ((addr) &0x000FFFFF)
+#define BIT_WORD_OFFSET(addr,bitnum) ((BYTE_OFFSET(addr)<<5)+((bitnum)<<2))
+#define BITBAND(addr,bitnum) (BIT_BAND_BASE(addr)+BIT_WORD_OFFSET(addr,bitnum))
+
+
+//处理位段
+typedef struct
+{
+  __IO uint32_t BIT[32];
+  
+} BitBand;
+
+
+/****************************
+位段实现 RCC
+****************************/
+typedef struct
+{
+  __IO uint32_t HSION;
+  __IO uint32_t HSIRDY;
+  __IO uint32_t REVERSED0;
+  __IO uint32_t HSITRIM[5];
+  __IO uint32_t HSICAL[8];
+  __IO uint32_t HSEON;
+  __IO uint32_t HSERDY;
+  __IO uint32_t HSEBYP;
+  __IO uint32_t CSSON;
+  __IO uint32_t REVERSED1[4];
+  __IO uint32_t PLLON;
+  __IO uint32_t PLLRDY;
+  __IO uint32_t REVERSED2[6];
+  
+} BIT_RCC_CR;
+
+typedef struct
+{
+  __IO uint32_t SW[2];
+  __IO uint32_t SWS[2];
+  __IO uint32_t HPRE[4];
+  __IO uint32_t PPRE1[3];
+  __IO uint32_t PPRE2[3];
+  __IO uint32_t ADCPRE[2];
+  __IO uint32_t PLLSRC;
+  __IO uint32_t PLLXTPRE;
+  __IO uint32_t PLLNUL[4];
+  __IO uint32_t USBPRE;
+  __IO uint32_t REVERSED0;
+  __IO uint32_t MCO[3];
+  __IO uint32_t REVERSED1[5];
+  
+} BIT_RCC_CFGR;
+
+typedef struct
+{
+  __IO uint32_t LSIRDYF;
+  __IO uint32_t LSERDYF;
+  __IO uint32_t HSIRDYF;
+  __IO uint32_t HSERDYF;
+  __IO uint32_t PLLRDYF;
+  __IO uint32_t REVERSED0[2];
+  __IO uint32_t CSSF;
+  __IO uint32_t LSIRDYIE;
+  __IO uint32_t LSERDYIE;
+  __IO uint32_t HSIRDYIE;
+  __IO uint32_t HSERDYIE;
+  __IO uint32_t PLLRDYIE;
+  __IO uint32_t REVERSED1[3];
+  __IO uint32_t LSIRDYC;
+  __IO uint32_t LSERDYC;
+  __IO uint32_t HISRDYC;
+  __IO uint32_t HSERDYC;
+  __IO uint32_t PLLRDYC;
+  __IO uint32_t REVERSED2[2];
+  __IO uint32_t CSSC;
+  __IO uint32_t REVERSED3[8];
+  
+} BIT_RCC_CIR;
+
+typedef struct
+{
+  __IO uint32_t AFIORST;
+  __IO uint32_t REVERSED0;
+  __IO uint32_t IOPARST;
+  __IO uint32_t IOPBRST;
+  __IO uint32_t IOPCRST;
+  __IO uint32_t IOPDRST;
+  __IO uint32_t IOPERST;
+  __IO uint32_t IOPFRST;
+  __IO uint32_t IOPGRST;
+  __IO uint32_t ADC1RST;
+  __IO uint32_t ADC2RST;
+  __IO uint32_t TIM1RST;
+  __IO uint32_t SPI1RST;
+  __IO uint32_t TIM8RST;
+  __IO uint32_t USART1RST;
+  __IO uint32_t ADC3RST;
+  __IO uint32_t REVERSED1[16];
+
+  
+} BIT_RCC_APB2RSTR;
+
+typedef struct
+{
+  __IO uint32_t TIM2RST;
+  __IO uint32_t TIM3RST;
+  __IO uint32_t TIM4RST;
+  __IO uint32_t TIM5RST;
+  __IO uint32_t TIM6RST;
+  __IO uint32_t TIM7RST;
+  __IO uint32_t REVERSED0[5];
+  __IO uint32_t WWDGRST;
+  __IO uint32_t REVERSED1[2];
+  __IO uint32_t SPI2RST;
+  __IO uint32_t SPI3RST;
+
+  __IO uint32_t REVERSED2;
+  __IO uint32_t USART2RST;
+  __IO uint32_t USART3RST;
+  __IO uint32_t USART4RST;
+  __IO uint32_t USART5RST;
+  __IO uint32_t I2C1RST;
+  __IO uint32_t I2C2RST;
+  __IO uint32_t USBRST;
+  __IO uint32_t REVERSED3;
+  __IO uint32_t CANRST;
+  __IO uint32_t REVERSED4;
+  __IO uint32_t BKPRST;
+  __IO uint32_t PWRRST;
+  __IO uint32_t DACRST;
+  __IO uint32_t REVERSED5[2];
+
+} BIT_RCC_APB1RSTR;
+
+
+typedef struct
+{
+  __IO uint32_t DMA1EN;
+  __IO uint32_t DMA2EN;
+  __IO uint32_t SRAMEN;
+  __IO uint32_t REVERSED0;
+  __IO uint32_t FLITFEN;
+  __IO uint32_t REVERSED1;
+  __IO uint32_t CRCEN;
+  __IO uint32_t REVERSED2;
+  __IO uint32_t FSMCEN;
+  __IO uint32_t REVERSED3;
+  __IO uint32_t SDIOEN;
+  __IO uint32_t REVERSED4[21];
+
+} BIT_RCC_AHBENR;
+
+typedef struct
+{
+  __IO uint32_t AFIOEN;
+  __IO uint32_t REVERSED0;
+  __IO uint32_t IOPAEN;
+  __IO uint32_t IOPBEN;
+  __IO uint32_t IOPCEN;
+  __IO uint32_t IOPDEN;
+  __IO uint32_t IOPEEN;
+  __IO uint32_t IOPFEN;
+  __IO uint32_t IOPGEN;
+  __IO uint32_t ADC1EN;
+  __IO uint32_t ADC2EN;
+  __IO uint32_t TIM1EN;
+  __IO uint32_t SPI1EN;
+  __IO uint32_t TIM8EN;
+  __IO uint32_t USART1EN;
+  __IO uint32_t ADC3EN;
+  __IO uint32_t REVERSED1[16];
+  
+} BIT_RCC_APB2ENR;
+
+typedef struct
+{
+  __IO uint32_t TIM2EN;
+  __IO uint32_t TIM3EN;
+  __IO uint32_t TIM4EN;
+  __IO uint32_t TIM5EN;
+  __IO uint32_t TIM6EN;
+  __IO uint32_t TIM7EN;
+  __IO uint32_t REVERSED0[5];
+  __IO uint32_t WWDGEN;
+  __IO uint32_t REVERSED1[2];
+  __IO uint32_t SPI2EN;
+  __IO uint32_t SPI3EN;
+
+  __IO uint32_t REVERSED2;
+  __IO uint32_t USART2EN;
+  __IO uint32_t USART3EN;
+  __IO uint32_t USART4EN;
+  __IO uint32_t USART5EN;
+  __IO uint32_t I2C1EN;
+  __IO uint32_t I2C2EN;
+  __IO uint32_t USBEN;
+  __IO uint32_t REVERSED3;
+  __IO uint32_t CANEN;
+  __IO uint32_t REVERSED4;
+  __IO uint32_t BKPEN;
+  __IO uint32_t PWREN;
+  __IO uint32_t DACEN;
+  __IO uint32_t REVERSED5[2];
+
+} BIT_RCC_APB1ENR;
+
+typedef struct
+{
+  __IO uint32_t LSEON;
+  __IO uint32_t LSERDY;
+  __IO uint32_t LSEBYP;
+  __IO uint32_t REVERSED0[5];
+  __IO uint32_t RTCSEL[2];
+  __IO uint32_t REVERSED1[5];
+  __IO uint32_t RTCEN;
+  __IO uint32_t BRRST;
+  __IO uint32_t REVERSED2[15];
+
+} BIT_RCC_BDCR;
+
+typedef struct
+{
+  __IO uint32_t LSION;
+  __IO uint32_t LSIRDY;
+  __IO uint32_t REVERSED0[22];
+
+  __IO uint32_t RMVF;
+  __IO uint32_t REVERSED1;
+
+  __IO uint32_t PINRSTF;
+  __IO uint32_t PORRSTF;
+  __IO uint32_t SFTRSTF;
+  __IO uint32_t IWDGSTF;
+  __IO uint32_t WWDGSTF;
+  __IO uint32_t LDWRSTF;
+
+} BIT_RCC_CSR;
+
+typedef struct
+{
+
+	__IO BIT_RCC_CR CR;
+	__IO BIT_RCC_CFGR CFGR;
+	__IO BIT_RCC_CIR CIR;
+	__IO BIT_RCC_APB2RSTR APB2RSTR;
+	__IO BIT_RCC_APB1RSTR APB1RSTR;
+	__IO BIT_RCC_AHBENR AHBENR;
+	__IO BIT_RCC_APB2ENR APB2ENR;
+	__IO BIT_RCC_APB1ENR APB1ENR;
+	__IO BIT_RCC_BDCR BDCR;
+	__IO BIT_RCC_CSR CSR;
+  
+} BIT_RCC;
+#define B_RCC	((BIT_RCC *)BITBAND(RCC_BASE,0))
+/****************************
+位段实现 GPIO
+****************************/
+typedef struct
+{
+  __IO uint32_t MODE[2];
+  __IO uint32_t CNF[2];
+} BIT_GPIO_CP_CONFIG;
+typedef struct
+{
+  BIT_GPIO_CP_CONFIG CONFIG[16];
+} BIT_GPIO_CP;
+
+typedef struct
+{
+  __IO uint32_t MODE8[2];
+  __IO uint32_t CNF8[2];
+  __IO uint32_t MODE9[2];
+  __IO uint32_t CNF9[2];
+  __IO uint32_t MODE10[2];
+  __IO uint32_t CNF10[2];
+  __IO uint32_t MODE11[2];
+  __IO uint32_t CNF11[2];
+  __IO uint32_t MODE12[2];
+  __IO uint32_t CNF12[2];
+  __IO uint32_t MODE13[2];
+  __IO uint32_t CNF13[2];
+  __IO uint32_t MODE14[2];
+  __IO uint32_t CNF14[2];
+  __IO uint32_t CNF15[2];
+  __IO uint32_t MODE15[2];
+} BIT_GPIO_CPH;
+
+typedef struct
+{
+  __IO uint32_t BS[16];
+  __IO uint32_t BR[16];
+} BIT_GPIO_BSRR;
+
+typedef struct
+{
+  __IO uint32_t BR[16];
+  __IO uint32_t REVERISED[16];
+} BIT_GPIO_BRR;
+
+typedef struct
+{
+  __IO uint32_t LCK[16];
+  __IO uint32_t LCKR;
+  __IO uint32_t REVERISED[15];
+} BIT_GPIO_LCKR;
+
+typedef struct
+{
+
+	__IO BIT_GPIO_CP	 CP;
+	__IO BitBand		 IDR;
+	__IO BitBand		 ODR;
+	__IO BIT_GPIO_BSRR	 BSRR;
+	__IO BIT_GPIO_BRR	 BRR;
+	__IO BIT_GPIO_LCKR	 LCKR;
+  
+} BIT_GPIO;
+
+//对GPIO的封装
+#define PA               ((BIT_GPIO *)BITBAND(GPIOA_BASE,0))
+#define PB               ((BIT_GPIO *)BITBAND(GPIOB_BASE,0))
+#define PC               ((BIT_GPIO *)BITBAND(GPIOC_BASE,0))
+#define PD               ((BIT_GPIO *)BITBAND(GPIOD_BASE,0))
+#define PE               ((BIT_GPIO *)BITBAND(GPIOE_BASE,0))
+#define PF               ((BIT_GPIO *)BITBAND(GPIOF_BASE,0))
+#define PG               ((BIT_GPIO *)BITBAND(GPIOG_BASE,0))
+
+/****************************
+位段实现 FLASH(未完成)
+****************************/
+typedef struct
+{
+  __IO uint32_t LATENCY[3];
+  __IO uint32_t HLFCYA;
+  __IO uint32_t PRFTBE;
+  __IO uint32_t PRFTBS;
+  __IO uint32_t REVERISED[26];
+} BIT_FLASH_ACR;
+typedef struct
+{
+
+	__IO BIT_FLASH_ACR	 ACR;
+  
+} BIT_FLASH;
+
+#define B_FLASH               ((BIT_FLASH *)BITBAND(FLASH_R_BASE,0))
+
+
+
+/****************************
+位段实现 USART
+****************************/
+typedef struct
+{
+  __IO uint32_t ParE;
+  __IO uint32_t FE;
+  __IO uint32_t NE;
+  __IO uint32_t ORE;
+  __IO uint32_t IDLE;
+  __IO uint32_t RXNE;
+  __IO uint32_t TC;
+  __IO uint32_t TXE;
+  __IO uint32_t LBD;
+  __IO uint32_t CTS;
+  __IO uint32_t REVERISED[22];
+} BIT_USART_SR;
+
+
+typedef struct
+{
+  __IO uint32_t DR[9];
+  __IO uint32_t REVERISED[23];
+} BIT_USART_DR;
+	
+
+typedef struct
+{
+  __IO uint32_t DIV_Fraction[4];
+  __IO uint32_t DIV_Mantissa[12];
+  __IO uint32_t REVERISED[16];
+} BIT_USART_BRR;
+
+typedef struct
+{
+  __IO uint32_t SBK;
+  __IO uint32_t RWU;
+  __IO uint32_t RE;
+  __IO uint32_t TE;
+  __IO uint32_t IDLEIE;
+  __IO uint32_t RXNEIE;
+  __IO uint32_t TCIE;
+  __IO uint32_t TXEIE;
+  __IO uint32_t PEIE;
+  __IO uint32_t PX;
+  __IO uint32_t PCE;
+  __IO uint32_t WAKE;
+  __IO uint32_t M;
+  __IO uint32_t UE;
+  __IO uint32_t REVERISED[18];
+} BIT_USART_CR1;
+
+typedef struct
+{
+  __IO uint32_t ADD[4];
+  __IO uint32_t REVERISED0;
+  __IO uint32_t LBDL;
+  __IO uint32_t LBDIE;
+  __IO uint32_t REVERISED1;
+  __IO uint32_t LBCL;
+  __IO uint32_t CPHA;
+  __IO uint32_t CPOL;
+  __IO uint32_t CLKEN;
+  __IO uint32_t STOP[2];
+  __IO uint32_t LINEN;
+  __IO uint32_t REVERISED2[17];
+} BIT_USART_CR2;
+
+typedef struct
+{
+  __IO uint32_t EIE;
+  __IO uint32_t IREN;
+  __IO uint32_t IPLP;
+  __IO uint32_t HDSEL;
+  __IO uint32_t NACK;
+  __IO uint32_t SCEN;
+  __IO uint32_t DMAR;
+  __IO uint32_t DMAT;
+  __IO uint32_t RTSE;
+  __IO uint32_t CTSE;
+  __IO uint32_t CTSIE;
+  __IO uint32_t REVERISED2[21];
+} BIT_USART_CR3;
+
+typedef struct
+{
+  __IO uint32_t PSC[8];
+  __IO uint32_t GT[8];
+  __IO uint32_t REVERISED[16];
+} BIT_USART_GTPR;
+
+
+
+typedef struct
+{
+
+	__IO BIT_USART_SR	 SR;
+	__IO BIT_USART_DR	 DR;
+	__IO BIT_USART_BRR	 BRR;
+	__IO BIT_USART_CR1	 CR1;
+	__IO BIT_USART_CR2	 CR2;
+	__IO BIT_USART_CR3	 CR3;
+	__IO BIT_USART_GTPR	 GTPR;
+  
+} BIT_USART;
+
+
+#define B_USART1	((BIT_USART *)BITBAND(USART1_BASE,0))
+#define B_USART2	((BIT_USART *)BITBAND(USART2_BASE,0))
+#define B_USART3	((BIT_USART *)BITBAND(USART3_BASE,0))
+#define B_UART4		((BIT_USART *)BITBAND(UART4_BASE,0))
+#define B_UART5		((BIT_USART *)BITBAND(UART5_BASE,0))
+
+
+
+
+extern uint32_t SystemCoreClock;
+#ifdef __cplusplus
+ }
+#endif 
+ 
+#endif 
